@@ -2,12 +2,14 @@ a = [2,2,2,2,2,2,2,2,2]
 flag = 0
 pos = 0
 counter = 0
+p1 = 0
 
 def board2():
+	#print("flag: ",flag)
 	print()
-	print(a[0],' ',a[1],' ',a[2])
-	print(a[3],' ',a[4],' ',a[5])
 	print(a[6],' ',a[7],' ',a[8])
+	print(a[3],' ',a[4],' ',a[5])
+	print(a[0],' ',a[1],' ',a[2])
 	playerMove()
 
 def lose():
@@ -18,7 +20,7 @@ def lose():
 def win():
 	print('#####################################################################################')
 	#print('#############CONGRATULATIONS YOU PROVED YOUR WORTH i.e NOTHING#######################')
-	print('###############################   YOU WON!   ########################################')
+	print('###############################   YOU LOSE   ########################################')
 	print('#####################################################################################')
 def draw():
 	print('*****************************************************************************************')
@@ -26,24 +28,40 @@ def draw():
 	print('*****************************************************************************************')
 
 def systemMove():
-	global flag
+	global flag,p1
+	#print("the value of p1",p1)
 	if flag == 0:         #move to take if no one is winning
-		if a[4]==2:
-			a[4]=5
+		if p1 == 1:
+			if a[4]==2:
+				a[4]=5
 
-		elif a[6]==3 and a[4]==5:
-			a[2]=5
+			elif a[6]==3 and a[4]==5:
+				a[2]=5
 
-		elif a[6]==5 and a[4]==3:
-			a[0]=5
+			elif a[6]==5 and a[4]==3:
+				a[0]=5
 
-		elif a[4]==5:
+			elif a[4]!=2:
+				if a[0] == 2:
+					a[0] = 5
+				elif a[2] == 2:
+					a[2] = 5
+				elif a[8] == 2:
+					a[8] = 5
+		elif p1 == 2:
+			#print("entered the p1 == 2")
 			if a[0] == 2:
 				a[0] = 5
-			elif a[2] == 2:
+			elif a[8] != 2 and a[2] == 2:
 				a[2] = 5
+			elif a[8] != 2 and a[6] == 2:
+				a[6] = 5
 			elif a[8] == 2:
 				a[8] = 5
+			else:
+				print("error in systemMove")
+		else:
+			print("error in system move else")
 
 		board2()
 
@@ -199,9 +217,9 @@ def calc():
 def board1(move):										# prints the board for player 1 move
 	a[move] = 3
 	print()
-	print(a[0],' ',a[1],' ',a[2])
-	print(a[3],' ',a[4],' ',a[5])
 	print(a[6],' ',a[7],' ',a[8])
+	print(a[3],' ',a[4],' ',a[5])
+	print(a[0],' ',a[1],' ',a[2])
 	global counter
 	counter = counter + 1
 	if counter == 5:
@@ -214,10 +232,19 @@ def playerMove():
 	move = move - 1
 	board1(move)
 def main():
+	global p1
 	print("This is a game of tik tak toe")
 	print("Enjoy!")
-	print("you are the player first")
-	playerMove()
+	p1 = int(input("press 1 if you want to play first, else press 2: "))
+	if p1 == 1:
+		print("you are the player first")
+		playerMove()
+	elif p1 == 2:
+		print("you are second player")
+		systemMove()
+	else:
+		print("error the right no.")
+		main()
 
 
 if __name__ == '__main__':
